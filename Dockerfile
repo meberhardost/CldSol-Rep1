@@ -1,7 +1,10 @@
 FROM maven:3.6.3-jdk-8-slim as maven-build
 COPY src /tmp/self-information/src
 COPY pom.xml /tmp/self-information/
+RUN echo $(ls -1 /tmp/self-information)
+RUN echo $(ls -1 /tmp/self-information/src)
 RUN mvn -f /tmp/self-information/pom.xml clean package
+RUN echo $(ls -1 /tmp/self-information/target)
 
 FROM openjdk:8-jdk-alpine
 COPY --from=maven-build /tmp/self-information/target/self-information-0.0.1-SNAPSHOT.jar /tmp/self-information/app/
